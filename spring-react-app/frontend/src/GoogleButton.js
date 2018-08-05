@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-// import { withStyles } from '@material-ui/core/styles';
 
 
 class GoogleButton extends Component {
@@ -12,23 +10,6 @@ class GoogleButton extends Component {
         super(props);
         this.state = { message: "hello" };
     }
-
-    componentDidMount(){
-        // this.setState({message: "hi"});
-    };
-
-    dbConnection = () => {
-        fetch('/DBConnection')
-            .then(response => response.text())
-            .then(message => {
-                this.setState({message: message});
-            });
-    };
-
-    testMe = () => {
-        this.setState({message: "test:"});
-        return this.state.message;
-    };
 
     render(){
         return (
