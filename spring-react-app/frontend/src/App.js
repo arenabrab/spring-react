@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+// import GoogleButton from "./GoogleButton";
+// import AccountTable from "./AccountTable";
 import Button from '@material-ui/core/Button';
 
 class App extends Component {
@@ -11,22 +13,26 @@ class App extends Component {
     urlStart = "/add?transactionAmount=";
     urlEnd = "&description=";
     getOne = "/finance?transactionId=";
-    state = {};
+    state = {text: ""};
 
     handleOneTransaction = () => {
         fetch(this.getOne+this.state.transactionIndex)
             .then(response => response.json())
             .then(message => {
-                this.setState({message: message});
+                this.setState({getOneResponse: message});
                 console.log(message);
+            })
+            .then(() => {
+                console.log(this.state.getOneResponse.transactionAmount);
+                this.setState({text:this.state.getOneResponse.transactionAmount});
             });
     };
 
     addToDB = () => {
         fetch(this.urlStart + this.state.transactionAmount + this.urlEnd + this.state.description)
             .then(message => {
-                this.setState({textResponse: message});
-                console.log(this.state.textResponse)
+                this.setState({addResponse: message});
+                console.log(this.state.addResponse)
             });
     };
 
@@ -91,7 +97,7 @@ class App extends Component {
                 <Button onClick={() => {this.handleOneTransaction()}}>Get id 1</Button>
               </div>
               <div>
-                  <text>{this.state.transactionAmount}</text>
+                  <text>{this.state.text}</text>
               </div>
           </div> 
       );
