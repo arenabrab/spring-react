@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-// import GoogleButton from "./GoogleButton";
-// import AccountTable from "./AccountTable";
 import Button from '@material-ui/core/Button';
 
 class App extends Component {
@@ -12,30 +10,23 @@ class App extends Component {
 
     urlStart = "/add?transactionAmount=";
     urlEnd = "&description=";
+    getOne = "/finance?transactionId=";
     state = {};
 
-    // setMessage = () => {
-    //     fetch("/all")
-    //         .then(message => {
-    //             // this.setState({message: message});
-    //             // console.log(message);
-    //         });
-    // };
-
     handleOneTransaction = () => {
-        fetch("/finance?transactionId=1")
+        fetch(this.getOne+this.state.transactionIndex)
+            .then(response => response.json())
             .then(message => {
                 this.setState({message: message});
-                // console.log(message);
+                console.log(message);
             });
     };
 
     addToDB = () => {
         fetch(this.urlStart + this.state.transactionAmount + this.urlEnd + this.state.description)
-            // .then(response => response.json())
             .then(message => {
-                // this.setState({textResponse: message});
-                console.log(message);
+                this.setState({textResponse: message});
+                console.log(this.state.textResponse)
             });
     };
 
@@ -58,6 +49,12 @@ class App extends Component {
         });
     };
 
+    handleThreeChange = (event) => {
+        let input = event.target.value;
+        this.setState({
+            transactionIndex: input
+        });
+    };
 
 
 
@@ -80,6 +77,11 @@ class App extends Component {
                               <input type={"text"} value={this.state.value} onChange={this.handleTwoChange}/>
                           </label>
                       </div>
+                      <div>
+                          <label>Index
+                              <input type={"text"} value={this.state.value} onChange={this.handleThreeChange}/>
+                          </label>
+                      </div>
                   </form>
               </div>
               <div>
@@ -89,7 +91,7 @@ class App extends Component {
                 <Button onClick={() => {this.handleOneTransaction()}}>Get id 1</Button>
               </div>
               <div>
-                  <text>{this.state.message}</text>
+                  <text>{this.state.transactionAmount}</text>
               </div>
           </div> 
       );
