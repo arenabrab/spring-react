@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -22,7 +22,18 @@
   font-size: large;
 }
 
+.Top {
+  /*display: block;*/
+}
+.Stuff {
+  /*justify-self: flex-start;*/
+  /*display: inline-flex;*/
+  /*justify-items: flex-start;*/
+  /*justify-content: flex-start;*/
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+

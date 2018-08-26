@@ -1,31 +1,54 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-// import GoogleButton from "./GoogleButton";
-// import AccountTable from "./AccountTable";
 import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+
+const styles = theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    margin: {
+        margin: theme.spacing.unit,
+    },
+    withoutLabel: {
+        marginTop: theme.spacing.unit * 3,
+    },
+    textField: {
+        flexBasis: 200,
+    },
+});
 
 class App extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            text: "",
+            transactionAmount: "",
+            description: "",
+            transactionIndex: "",
+            getOneResponse: "",
+        }
     }
 
     urlStart = "/add?transactionAmount=";
     urlEnd = "&description=";
     getOne = "/finance?transactionId=";
-    state = {text: ""};
+
 
     handleOneTransaction = () => {
         fetch(this.getOne+this.state.transactionIndex)
             .then(response => response.json())
             .then(message => {
-                this.setState({getOneResponse: message});
-                console.log(message);
+                this.setState({text:message.transactionAmount});
             })
-            .then(() => {
-                console.log(this.state.getOneResponse.transactionAmount);
-                this.setState({text:this.state.getOneResponse.transactionAmount});
-            });
     };
 
     addToDB = () => {
@@ -36,33 +59,11 @@ class App extends Component {
             });
     };
 
-    handleSubmit = (event) => {
-        alert(this.state.transactionAmount + " " + this.state.description);
-        event.preventDefault();
-    };
-
-    handleOneChange = (event) => {
-        let input1 = event.target.value;
+    handleChange = (event) => {
         this.setState({
-            transactionAmount: input1
-        });
+            [event.target.name]:event.target.value,
+        })
     };
-
-    handleTwoChange = (event) => {
-        let input1 = event.target.value;
-        this.setState({
-            description: input1
-        });
-    };
-
-    handleThreeChange = (event) => {
-        let input = event.target.value;
-        this.setState({
-            transactionIndex: input
-        });
-    };
-
-
 
   render() {
       return (
@@ -71,30 +72,66 @@ class App extends Component {
                   <img src={logo} className="App-logo" alt="logo"/>
                   <h1 className="App-title">Hello</h1>
               </header>
-              <div>
-                  <form onSubmit={this.handleSubmit}>
-                      <div>
-                          <label>Transaction Amount
-                              <input type={"text"} value={this.state.value} onChange={this.handleOneChange}/>
-                          </label>
-                      </div>
-                      <div>
-                          <label>Description
-                              <input type={"text"} value={this.state.value} onChange={this.handleTwoChange}/>
-                          </label>
-                      </div>
-                      <div>
-                          <label>Index
-                              <input type={"text"} value={this.state.value} onChange={this.handleThreeChange}/>
-                          </label>
-                      </div>
-                  </form>
+              <div className={"Top"}>
+                  <Grid
+                      container
+                      className={"Stuff"}
+                      spacing={8}
+                      direction={"row"}
+                      alignItems={"baseline"}>
+                      <Grid item>
+                          $
+                      </Grid>
+                      <Grid item>
+                          <TextField
+                              name={"transactionAmount"}
+                              onChange={this.handleChange}
+                              label={"Transaction Amount"}/>
+                      </Grid>
+                  </Grid>
+
+
+                  {/*<FormControl>*/}
+                      {/*<InputLabel>Transaction Amount</InputLabel>*/}
+                      {/*<Input*/}
+                          {/*name={"transactionAmount"}*/}
+                          {/*onChange={this.handleChange}*/}
+                          {/*startAdornment={<InputAdornment position={"start"}>$</InputAdornment>}*/}
+                      {/*/>*/}
+                  {/*</FormControl>*/}
+                  <TextField
+                      className={"Stuff"}
+                      // justify={"flex-start"}
+                      label={"Description"}
+                      name={"description"}
+                      onChange={this.handleChange}
+                  />
+                  <Button
+                      size={"small"}
+                      variant={"contained"}
+                      color={"primary"}
+                      onClick={this.addToDB}
+                  >
+                      Add to DB
+                  </Button>
               </div>
               <div>
-                  <Button variant={"contained"} onClick={this.addToDB}>Add to DB</Button>
-              </div>
-              <div>
-                <Button onClick={() => {this.handleOneTransaction()}}>Get id 1</Button>
+                  <Input
+                      label={"Index"}
+                      name={"transactionIndex"}
+                      value={this.state.transactionIndex}
+                      onChange={this.handleChange}
+                  />
+
+                  <Button
+                      size={"small"}
+                      variant={"contained"}
+                      color={"primary"}
+                      onClick={() => {
+                          this.handleOneTransaction()
+                      }}>
+                      Get index
+                  </Button>
               </div>
               <div>
                   <text>{this.state.text}</text>
